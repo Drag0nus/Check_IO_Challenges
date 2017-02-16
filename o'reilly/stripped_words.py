@@ -10,26 +10,26 @@ def check_io(text):
     print("\nText: " + text)
     for separator in SEPARATORS:
         text = text.replace(separator, " ")
-    words = text.split()
+    words = text.upper().split()
 
-    # Checking each word
     for word in words:
         if len(word) < 2:
             continue
 
-        i = 0
-        while i < len(word) - 1:
-            if VOWELS.count(word[i].upper()) == 0 and CONSONANTS.count(word[i].upper()) == 0 or \
-                            VOWELS.count(word[i].upper()) == VOWELS.count(word[i + 1].upper()) or \
-                            CONSONANTS.count(word[i].upper()) == CONSONANTS.count(word[i + 1].upper()):
-                print("Bad word: " + word + " - Reason: " + word[i] + word[i + 1])
-                i = len(word)
-            i += 1
-            if i == len(word) - 1:
-                print("Correct word: " + word)
-                result += 1
+        odd_letters = []
+        even_letters = []
 
-    print("Result: " + str(result))
+        for i in range(0, len(word)):
+            if i % 2 == 0:
+                even_letters.append(word[i])
+            elif i % 2 != 0:
+                odd_letters.append(word[i])
+
+        if even_letters and odd_letters:
+            if all(v in VOWELS for v in even_letters) and all(c in CONSONANTS for c in odd_letters) or \
+                        all(v in CONSONANTS for v in even_letters) and all(c in VOWELS for c in odd_letters):
+                result += 1
+    print(result)
     return result
 
 
@@ -44,3 +44,4 @@ def check_io(text):
 check_io("My name is ...")
 check_io("A quantity of striped words.")
 check_io("Hello world") == 0
+check_io("Dog,cat,mouse,bird.Human.")
